@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppI
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 TOKEN = "8988797748:AAFFDRAh-VRy6ogJw2UAS_pmPKr-1GPvwpU"
-MINI_APP_URL = "https://st7797jyjk-ship-it.github.io/casino-mini-app/mini-app/"
+MINI_APP_URL = "https://st7797jyjk-ship-it.github.io/casx/mini-app/"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
