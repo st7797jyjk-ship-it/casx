@@ -544,4 +544,37 @@
         }
         
         function bjHit() {
-            if (!bjActive)
+            if (!bjActive) return;
+            playerCards.push(deck.pop());
+            if (handScore(playerCards) > 21) {
+                bjActive = false; stats.bj++;
+                renderBJ();
+                document.getElementById('bjResult').innerHTML = '<div class="result-text lose">💥 Перебор! -'+bjBet+' монет</div>';
+                updateAllUI(); tg.HapticFeedback.notification('error');
+                return;
+            }
+            if (handScore(playerCards) === 21) bjStand();
+            renderBJ();
+            tg.HapticFeedback.selection();
+        }
+        
+        function bjStand() {
+            if (!bjActive) return;
+            bjActive = false; stats.bj++;
+            while (handScore(dealerCards) < 17) dealerCards.push(deck.pop());
+            let ps=handScore(playerCards), ds=handScore(dealerCards), win=0, msg='';
+            if (ps>21) msg='💥 Перебор! -'+bjBet;
+            else if (ds>21) { win=bjBet*2; msg='🎉 Перебор дилера! +'+win; stats.wins++; }
+            else if (ps>ds) { win=bjBet*2; msg='🎉 Ты выиграл! +'+win; stats.wins++; }
+            else if (ps===ds) { win=bjBet; msg='🤝 Ничья! Возврат'; }
+            else msg='😢 Дилер выиграл! -'+bjBet;
+            balance += win;
+            renderBJ();
+            document.getElementById('bjResult').innerHTML = `<div class="result-text ${win>=bjBet?'win':'lose'}">${msg} монет</div>`;
+            updateAllUI();
+            tg.HapticFeedback.impact(win>=bjBet?'heavy':'light');
+            setTimeout(resetBJ, 3000);
+        }
+    </script>
+</body>
+</html>
